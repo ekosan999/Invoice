@@ -18,7 +18,10 @@ builder.Services.AddSingleton(s => AutoMapperFactory.CreateMapper());
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(Configuration.GetConnectionString("InvoiceDb"), sqloption =>
     sqloption.MigrationsAssembly(typeof(Program).GetTypeInfo().Assembly.GetName().Name)));
-
+builder.Services.AddCors(opt => opt.AddPolicy("CorsPolicy", builder =>
+{
+    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+}));
 
 builder.Services.AddScoped<CategoryRepository>();
 builder.Services.AddScoped<ProductRepository>();
