@@ -14,6 +14,7 @@ namespace Invoice.Data.Repository
         //Task Update(InvoiceUpdateDto updateDto);
         void DeleteById(int id);
         Task SaveChangeAsync();
+        Task<InvoiceViewDto> UpdateAsync(Invoices invoices);
     }
     public class InvoiceRepository : IInvoiceRepository
     {
@@ -63,6 +64,13 @@ namespace Invoice.Data.Repository
         public async Task SaveChangeAsync()
         {
             await _context.SaveChangesAsync();
+        }
+        public async Task<InvoiceViewDto> UpdateAsync(Invoices invoices)
+        {
+            var model = await _context.Invoices.FindAsync(invoices.Id);
+            model = _mapper.Map(invoices, model);
+            await _context.SaveChangesAsync();
+            return _mapper.Map<InvoiceViewDto>(model);
         }
     }
 }

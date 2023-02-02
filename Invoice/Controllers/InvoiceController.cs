@@ -52,6 +52,14 @@ namespace Invoice.Controllers
             if (result == null) return NotFound("Invoice Not Found");
             return Ok(result);
         }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id,[FromBody] InvoiceUpdateDto updateDto)
+        {
+            if (id != updateDto.Id) return BadRequest();
+            var result = await _invoiceRepository.UpdateAsync(_mapper.Map<Invoices>(updateDto));
+            return Ok(result);
+        }
+
     }
 }
 
